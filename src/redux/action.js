@@ -1,4 +1,4 @@
-export const url ="https://workserver-1.onrender.com";
+export const url ="http://192.168.0.105:4000";
 
 export const getdatarequest = "GETDATAREQUEST";
 export const getdatasucces = "GETDATA";
@@ -16,8 +16,6 @@ export const edittasksucces= "edittasksucces"
 export const edittaskerror= "edittaskerror"
 
 
-//hashracvxdfgggggggg
-//gfhdhd
 export const getdatareq = (payload1) => {
   return { type: getdatarequest, payload: payload1 };
 };
@@ -149,7 +147,7 @@ export const edittasks = (taskId, newdata) => {
   return (dispatch) => {
     dispatch(edittaskreq());
      
-       console.log(taskId)
+    console.log(newdata)
     fetch(`${url}/updateTaskDetails/${taskId}`, {
       method: "PUT",
       headers: {
