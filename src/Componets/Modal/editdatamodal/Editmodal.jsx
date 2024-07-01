@@ -32,7 +32,6 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       setSelectedDate(task.dueDate ? new Date(task.dueDate) : null);
       setAssignee(task.name);
     }
-    console.log(assignee);
   }, [task]);
 
   useEffect(() => {
@@ -82,7 +81,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       status: task.status,
       checklist: checklist,
       duedate: formattedDueDate,
-      assignee: assignee.value 
+      assignee: assignee?assignee:null
     };
     console.log(assignee)
 
