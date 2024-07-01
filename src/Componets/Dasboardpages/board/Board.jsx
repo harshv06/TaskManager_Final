@@ -309,8 +309,8 @@ function Board() {
               <h2 className={Style.datenew}>{formattedDate}</h2>
               <select value={filter} onChange={handleFilterChange}>
                 <option value="today">Today</option>
-                <option value="next-week">Next Week</option>
-                <option value="next-month">Next Month</option>
+                <option value="next-week">ThisWeek</option>
+                <option value="next-month">This Month</option>
               </select>
             </div>
           </div>
@@ -421,13 +421,17 @@ function Board() {
                       ))}
                   </div>
                   <div className={Style.divbuttons}>
-                    <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+                  {ele.dueDate? (
+              <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+             ) : (
+              <div className={Style.duedate2}></div>
+                 )}
                     <div className={Style.btns}>
-                      <button onClick={() => moveTask(ele._id, "inProgress")}>
+                      <button  onClick={() => moveTask(ele._id, "inProgress")}>
                         PROGRESS
                       </button>
-                      <button onClick={() => moveTask(ele._id, "TO-DO")}>
-                        TODO
+                      <button onClick={() => moveTask(ele._id, "BACKLOG")}>
+                        BACKLOG
                       </button>
                       <button onClick={() => moveTask(ele._id, "done")}>
                         DONE
@@ -463,11 +467,13 @@ function Board() {
               return (
                 <div key={ele._id} className={Style.todos}>
                   <div>
-                    <div>
+                  <div className={Style.subheader}>
                       {renderPriorityCircle(ele, ele.priority)}
                       <div className={ele.name ? Style.avatar : ""}>
                         <h4>
-                         {renderAvatar(ele)}
+                          {typeof ele.name === "string" && ele.name.length >= 2
+                            ? ele.name.substring(0, 2).toUpperCase()
+                            : ""}
                         </h4>
                       </div>
                     </div>
@@ -536,7 +542,11 @@ function Board() {
                       ))}
                   </div>
                   <div className={Style.divbuttons}>
-                    <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+                  {ele.dueDate? (
+              <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+             ) : (
+              <div className={Style.duedate2}></div>
+                 )}
                     <div className={Style.btns}>
                       <button  onClick={() => moveTask(ele._id, "inProgress")}>
                         PROGRESS
@@ -568,7 +578,7 @@ function Board() {
               return (
                 <div key={ele._id} className={Style.todos}>
                       <div>
-                    <div>
+                      <div className={Style.subheader}>
                       {renderPriorityCircle(ele, ele.priority)}
                       <div className={ele.name ? Style.avatar : ""}>
                         <h4>
@@ -647,7 +657,11 @@ function Board() {
                       ))}
                   </div>
                   <div className={Style.divbuttons}>
-                    <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+                  {ele.dueDate? (
+    <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+  ) : (
+    <div className={Style.duedate2}></div>
+  )}
                     <div className={Style.btns}>
                       <button onClick={() => moveTask(ele._id, "TO-DO")}>
                         TODO
@@ -680,7 +694,7 @@ function Board() {
               return (
                 <div key={ele._id} className={Style.todos}>
                   <div>
-                    <div>
+                  <div className={Style.subheader}>
                       {renderPriorityCircle(ele, ele.priority)}
                       <div className={ele.name ? Style.avatar : ""}>
                         <h4>
@@ -758,9 +772,11 @@ function Board() {
                       ))}
                   </div>
                   <div className={Style.divbuttons}>
-                    <div className={Style.datedone}>
-                      {formatDate(ele.dueDate)}
-                    </div>
+                  {ele.dueDate? (
+    <div className={Style.date}>{formatDate(ele.dueDate)}</div>
+  ) : (
+    <div className={Style.duedate2}></div>
+  )}
                     <div className={Style.btns}>
                       <button onClick={() => moveTask(ele._id, "TO-DO")}>
                         TODO
