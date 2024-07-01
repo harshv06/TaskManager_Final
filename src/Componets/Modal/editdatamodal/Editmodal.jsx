@@ -66,11 +66,12 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
   let formattedDueDate = selectedDate?.toLocaleDateString();
 
   const handleSubmit = async () => {
-    if (!inputValue || !prior) {
-      const newError = {};
-      if (!inputValue) newError.inputValue = "Please Enter Title";
-      if (!prior) newError.priority = "Please Select Priority";
-      setError(newError);
+    if (!inputValue || !prior || checklist.length === 0) {
+      const newErrors = {};
+      if (!inputValue) newErrors.inputValue = "Please enter a title";
+      if (!prior) newErrors.priority = "Please select a priority";
+      if (checklist.length === 0) newErrors.checklist = "Enter at least one task";
+      setError(newErrors);
       return;
     }
     if(!formattedDueDate){
@@ -151,7 +152,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
             placeholder="Enter Task title"
           />
         </div>
-        {errors.inputValue && <p className="error">{errors.inputValue}</p>}
+       
         <div className={style.prioritydiv}>
           <h3>
             Select Priority <span>*</span>
@@ -244,6 +245,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
             </div>
           ))}
         </div>
+        {errors.checklist && <p className={style.error}>{errors.checklist}</p>}
         <h2 onClick={handleAddChecklistItem} className={style.addNew}>
           <img src={add} alt="Add new" /> Add new
         </h2>
