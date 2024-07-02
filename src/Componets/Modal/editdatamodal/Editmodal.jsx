@@ -72,12 +72,15 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
   const handleSubmit = async () => {
     console.log(checklist)
     console.log(checklist.task===null)
-    if (!inputValue || !prior || checklist.length === 0) {
+    if (!inputValue || !prior || checklist.length === 0 || checklist.task===null) {
       const newErrors = {};
       if (!inputValue) newErrors.inputValue = "Please enter a title";
       if (!prior) newErrors.priority = "Please select a priority";
       if (checklist.length === 0)
         newErrors.checklist = "Enter at least one task";
+      if(checklist.task===null){
+        newErrors.checklist = "Please enter some data";
+      }
       setError(newErrors);
       return;
     }
