@@ -22,7 +22,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
   const allEmails = useAllEmails();
   const [assignee, setAssignee] = useState(null);
   const [errors, setError] = useState({});
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
   useEffect(() => {
     if (task) {
@@ -31,6 +31,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       setPrior(task.priority || "");
       setSelectedDate(task.dueDate ? new Date(task.dueDate) : null);
       setAssignee(task.name);
+      console.log("Checklist", task.checklist);
     }
   }, [task]);
 
@@ -43,45 +44,49 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
   };
 
   const handleChecklistTaskChange = (id, value) => {
-    console.log("Id",id)
     setChecklist((prevChecklist) =>
       prevChecklist.map((item) =>
         item.id === id ? { ...item, task: value } : item
       )
     );
+    console.log("Checklist", checklist);
   };
 
   const handleAddChecklistItem = () => {
-    setChecklist((prevChecklist) => [
-      ...prevChecklist,
-      { id: prevChecklist.length + 1, task: "", completed: false },
-    ],
-    console.log(checklist)
-  );
+    setChecklist(
+      (prevChecklist) => [
+        ...prevChecklist,
+        { id: prevChecklist.length + 1, task: "", completed: false },
+      ],  
+    );
   };
 
   const handleDeleteChecklistItem = (id) => {
     setChecklist((prevChecklist) =>
-      prevChecklist.filter((item) => item._id !== id)
+      prevChecklist.filter((item) => item.id !== id)
     );
   };
 
   let formattedDueDate = selectedDate?.toLocaleDateString();
 
   const handleSubmit = async () => {
-    if (!inputValue || !prior || checklist.length === 0) {
+    console.log(checklist)
+    console.log(checklist.task===null)
+    if (!inputValue || !prior || checklist.length === 0 || checklist.task===null) {
       const newErrors = {};
       if (!inputValue) newErrors.inputValue = "Please enter a title";
       if (!prior) newErrors.priority = "Please select a priority";
       if (checklist.length === 0)
         newErrors.checklist = "Enter at least one task";
+      if(checklist.task===null){
+        newErrors.checklist = "Please enter some data";
+      }
       setError(newErrors);
       return;
     }
     if (!formattedDueDate) {
       setSelectedDate(null);
       formattedDueDate = null;
-      console.log(formattedDueDate);
     }
     const payload = {
       _id: task._id,
@@ -92,7 +97,6 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       duedate: formattedDueDate,
       assignee: assignee ? assignee : null,
     };
-    console.log(assignee);
 
     dispatch(edittasks(task._id, payload));
     onRequestClose();
@@ -146,9 +150,9 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
         overlayClassName="overlay"
       >
         <div className={style.titlediv}>
-          <h2>
+          <h3>
             Title <span>*</span>
-          </h2>
+          </h3>
           <input
             type="text"
             value={inputValue}
@@ -191,7 +195,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
         </div>
         {errors.prior && <p className="error">{errors.prior}</p>}
         <div className={style.assigndiv}>
-          <h4>Assign to</h4>
+          <h3 className={style.check}>Assign to</h3>
           <Select
             options={emailOptions}
             components={{ Option: customOption }}
@@ -205,38 +209,35 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
           />
         </div>
 
-        <h3>
-          <h3 className={style.check}>
-            Checklist <span>{`(${checkedListCount}/${checklist.length})`}</span>
-          </h3>
+        <h3 className={style.check}>
+          Checklist <span>{`(${checkedListCount}/${checklist.length})`}</span>
         </h3>
 
         <div className={style.scrolldiv}>
           {checklist.map((item) => (
-            <div className={style.inputdiv} key={item._id}>
+            <div className={style.inputdiv} key={item.id}>
               <input
                 className={style.inputdiv1}
                 type="checkbox"
                 checked={item.completed}
-                onChange={() =>{
+                onChange={() => {
+                  console.log("Previous checklist:",checklist);
+                  console.log("Item",item);
                   setChecklist((prevChecklist) =>
                     prevChecklist.map((chk) =>
                       chk.id === item.id
-                        ? { ...chk, completed:!chk.completed }
+                        ? { ...chk, completed: !chk.completed }
                         : chk
                     )
-                  )
-                  console.log(checklist)
-                  console.log(item)
-                }
-                }
+                  );
+                  console.log(item);
+                }}
               />
               <input
                 className={style.inputdiv2}
                 type="text"
-                value={item.task}
+                value={item.task?item.task:''}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   handleChecklistTaskChange(item.id, e.target.value);
                 }}
                 placeholder="Enter task"
@@ -244,19 +245,19 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
               <img
                 className={style.deleteButton}
                 onClick={() => {
-                  console.log("Item", item._id);
-                  handleDeleteChecklistItem(item._id);
+                  console.log("Item", item.id);
+                  handleDeleteChecklistItem(item.id);
                 }}
                 src={Delete}
-                alt=""
+                alt="Delete"
               />
             </div>
           ))}
         </div>
         {errors.checklist && <p className={style.error}>{errors.checklist}</p>}
-        <h2 onClick={handleAddChecklistItem} className={style.addNew}>
-          <img src={add} alt="Add new" /> Add new
-        </h2>
+        <h3 onClick={handleAddChecklistItem} className={style.check}>
+          <img className={style.check} src={add} alt="Add new" /> Add new
+        </h3>
         <div className={style.buttons}>
           <div>
             <DatePicker
