@@ -80,16 +80,16 @@ const Modal = ({ isOpen, onRequestClose }) => {
   const handleSubmit = async () => {
     console.log(checklist.task==='')
     console.log("c",checklist)
-    if (!inputValue || !prior || checklist.length == 0 || checklist.task===null) {
+    if (!inputValue || !prior || checklist.length == 0) {
       const newErrors = {};
       console.log(checklist)
       if (!inputValue) newErrors.inputValue = "Please enter a title";
       if (!prior) newErrors.priority = "Please select a priority";
       if (checklist.length === 0)
         newErrors.checklist = "Enter at least one task";
-      if(checklist.task===null){
-        newErrors.checklist="Please enter data in checklist"
-      }
+      // if(checklist.task===null){
+      //   newErrors.checklist="Please enter data in checklist"
+      // }
       setErrors(newErrors);
       console.log(newErrors);
       return;
