@@ -159,7 +159,7 @@ useEffect(() => {
         className={style.assignButton}
         onClick={(e) => {
           e.stopPropagation();
-          setAssignee(data.value);
+          setAssignee(data);
         }}
       >
         Assign
