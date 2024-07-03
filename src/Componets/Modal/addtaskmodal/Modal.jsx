@@ -242,8 +242,8 @@ useEffect(() => {
             options={emailOptions}
             components={{ Option: customOption }}
             value={assignee}
-            onChange={(e)=>setAssignee(e.value)}
-            placeholder={assignee}
+            onChange={(e)=>setAssignee(e)}
+            placeholder="Select Assigne"
             isClearable
             className={style.select}
           />

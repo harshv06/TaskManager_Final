@@ -79,7 +79,7 @@ function Settings() {
       return
     } else if (response.nameChanged) {
       localStorage.setItem("name",response.name)
-      displayToast("Profile name updated successfully")
+      displayToast("Profile Details updated successfully")
       
       return
     }else if(response.emailChanged){
