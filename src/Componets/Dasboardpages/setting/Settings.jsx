@@ -7,6 +7,7 @@ import namelogo from "../../../assets/namelogo.svg";
 import { url } from "../../../redux/action";
 import { useNavigate } from "react-router-dom";
 import Vector from "../../../assets/Vector.svg";
+import Toast from "../../toasts/Toast";
 
 function Settings() {
   const [hideview, sethideview] = useState(false);
@@ -17,6 +18,13 @@ function Settings() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const displayToast = (message) => {
+    setToastMessage(message);
+    setShowToast(true);
+  };
 
   useEffect(() => {
     const id2 = localStorage.getItem("id");
@@ -69,12 +77,15 @@ function Settings() {
     const response = await result.json();
     if (response.message) {
       localStorage.clear();
+      displayToast("Password changed succesfully")
       navigate("/");
     } else if (response.errorPass) {
       newErrors.text = response.errorPass;
+      displayToast("Invalid password")
       setErrors(newErrors);
     } else if (response.nameChanged) {
       localStorage.clear();
+      displayToast("Profile Details changed successfully")
       navigate("/");
     }
     console.log(response);
@@ -82,6 +93,12 @@ function Settings() {
   return (
     <div className={Style.container}>
       <div className={Style.loginDiv}>
+        <Toast
+          message={toastMessage}
+          show={showToast}
+          duration={3000}
+          onClose={() => setShowToast(false)}
+        />
         <h1 className={Style.heading}>Settings</h1>
         <form action="">
           <div className={Style.mainDiv}>
