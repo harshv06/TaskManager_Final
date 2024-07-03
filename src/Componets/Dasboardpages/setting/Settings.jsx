@@ -48,13 +48,6 @@ function Settings() {
   const handleupdate = async () => {
     const newErrors = {};
     if (!name || !email) {
-      // if (!name) newErrors.name = "Please Enter Name";
-      // if (!email) newErrors.email = "Please Enter Email";
-      // if (!password) newErrors.password = "Please Enter Password";
-      // if (!newPassword) newErrors.newPassword = "Please Enter New Password";
-      // if(password===newPassword){
-      //   errors.samePass=true
-      // }
       setErrors(newErrors);
       return;
     }
@@ -83,8 +76,14 @@ function Settings() {
       displayToast("Invalid password")
       newErrors.text = response.errorPass;
       setErrors(newErrors);
+      return
     } else if (response.nameChanged) {
-      displayToast("Profile Details changed successfully")
+      localStorage.setItem("name",response.name)
+      displayToast("Profile Details updated successfully")
+      
+      return
+    }else if(response.emailChanged){
+      displayToast("Profile Details updated successfully")
       localStorage.clear();
       navigate("/");
     }
