@@ -76,19 +76,18 @@ function Settings() {
 
     const response = await result.json();
     if (response.message) {
-      localStorage.clear();
       displayToast("Password changed succesfully")
+      localStorage.clear();
       navigate("/");
     } else if (response.errorPass) {
-      newErrors.text = response.errorPass;
       displayToast("Invalid password")
+      newErrors.text = response.errorPass;
       setErrors(newErrors);
     } else if (response.nameChanged) {
-      localStorage.clear();
       displayToast("Profile Details changed successfully")
+      localStorage.clear();
       navigate("/");
     }
-    console.log(response);
   };
   return (
     <div className={Style.container}>
@@ -96,7 +95,7 @@ function Settings() {
         <Toast
           message={toastMessage}
           show={showToast}
-          duration={3000}
+          duration={4000}
           onClose={() => setShowToast(false)}
         />
         <h1 className={Style.heading}>Settings</h1>
