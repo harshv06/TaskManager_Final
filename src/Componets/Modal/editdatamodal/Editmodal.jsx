@@ -84,7 +84,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       setSelectedDate(null);
       formattedDueDate = null;
     }
-    console.log(assignee===task.name)
+    console.log(assignee==null)
     const payload = {
       _id: task._id,
       title: inputValue,
@@ -92,9 +92,9 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
       status: task.status,
       checklist: checklist,
       duedate: formattedDueDate,
-      assignee: assignee===task.name ? null : assignee,
+      assignee: (assignee===task.name || assignee==null) ? null : assignee,
     };
-
+    console.log(payload)
     dispatch(edittasks(task._id, payload));
     onRequestClose();
     dispatch(fetchdata("next-week"));
@@ -124,6 +124,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
         className={style.assignButton}
         onClick={(e) => {
           e.stopPropagation();
+          console.log(data)
           setAssignee(data);
         }}
       >
@@ -198,9 +199,10 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
             components={{ Option: customOption }}
             value={assignee}
             onChange={(text) => {
-              console.log(text)
               setAssignee(text)
+              console.log(assignee)
             }}
+            on
             placeholder={assignee}
             isClearable
             className={style.select}
