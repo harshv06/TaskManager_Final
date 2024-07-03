@@ -36,7 +36,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
   }, [task]);
 
   useEffect(() => {
-    dispatch(fetchdata("today"));
+    dispatch(fetchdata("next-week"));
   }, [dispatch]);
 
   const handleInputChange = (e) => {
@@ -100,7 +100,7 @@ const Editmodal = ({ isOpen, onRequestClose, task }) => {
 
     dispatch(edittasks(task._id, payload));
     onRequestClose();
-    dispatch(fetchdata("today"));
+    dispatch(fetchdata("next-week"));
   };
 
   const handleHighPriorityClick = () => {
