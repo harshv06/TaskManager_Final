@@ -89,7 +89,7 @@ const Modal = ({ isOpen, onRequestClose }) => {
       priority: prior,
       status: "TO-DO",
       checklist: checklist,
-      assignee: assignee ? assignee.value.label : null,
+      assignee: assignee ? assignee.value : null,
       duedate: selectedDate ? new Date(selectedDate).toLocaleDateString() : null,
     };
 
@@ -195,8 +195,8 @@ const Modal = ({ isOpen, onRequestClose }) => {
             options={emailOptions}
             components={{ Option: customOption }}
             value={assignee}
-            onChange={setAssignee}
-            placeholder="Select assignee"
+            onChange={(text)=>setAssignee(text.value)}
+            placeholder={assignee}
             isClearable
             className={style.select}
           />
