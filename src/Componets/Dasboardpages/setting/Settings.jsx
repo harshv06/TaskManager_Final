@@ -39,14 +39,14 @@ function Settings() {
 
   const handleupdate = async () => {
     const newErrors = {};
-    if (!name || !email ) {
+    if (!name || !email) {
       // if (!name) newErrors.name = "Please Enter Name";
       // if (!email) newErrors.email = "Please Enter Email";
       // if (!password) newErrors.password = "Please Enter Password";
       // if (!newPassword) newErrors.newPassword = "Please Enter New Password";
-        // if(password===newPassword){
-        //   errors.samePass=true
-        // }
+      // if(password===newPassword){
+      //   errors.samePass=true
+      // }
       setErrors(newErrors);
       return;
     }
@@ -73,6 +73,9 @@ function Settings() {
     } else if (response.errorPass) {
       newErrors.text = response.errorPass;
       setErrors(newErrors);
+    } else if (response.nameChanged) {
+      localStorage.clear();
+      navigate("/");
     }
     console.log(response);
   };
@@ -143,10 +146,18 @@ function Settings() {
                 )}
               </span>
             </div>
-            {errors.newPassword && <p className="error">{errors.newPassword}</p>}
+            {errors.newPassword && (
+              <p className="error">{errors.newPassword}</p>
+            )}
           </div>
         </form>
-        {errors.text && <p className="error">{errors.samePass?"Old and new password cannot be same": errors.text}</p>}
+        {errors.text && (
+          <p className="error">
+            {errors.samePass
+              ? "Old and new password cannot be same"
+              : errors.text}
+          </p>
+        )}
         <div className={Style.btndiv}>
           <button onClick={handleupdate}>UPDATE</button>
         </div>
